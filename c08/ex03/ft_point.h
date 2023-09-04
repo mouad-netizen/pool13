@@ -6,19 +6,17 @@
 /*   By: momajdou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/03 11:59:11 by momajdou          #+#    #+#             */
-/*   Updated: 2023/09/03 17:14:06 by momajdou         ###   ########.fr       */
+/*   Updated: 2023/09/04 20:06:33 by momajdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #ifndef FT_POINT_H
 # define FT_POINT_H
 
-struct			s_point
+typedef struct s_point
 {
-	int			x;
-	int			y;
-};
-
-typedef s_point	t_point;
+	int	x;
+	int	y;
+}		t_point;
 
 #endif

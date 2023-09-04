@@ -6,7 +6,7 @@
 /*   By: momajdou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/09/02 10:43:48 by momajdou          #+#    #+#             */
-/*   Updated: 2023/09/03 21:34:59 by momajdou         ###   ########.fr       */
+/*   Updated: 2023/09/04 11:55:57 by momajdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,14 +87,14 @@ char	**ft_split(char *str, char *charset)
 	{
 		if (check_separator(*str, charset) || *(str + 1) == '\0')
 		{
-			if (*(str + 1) == 0)
+			if (*(str + 1) == '\0')
 				str++;
 			array[i] = copy_string(ptr, str);
 			str = skip_separators(str, charset);
 			ptr = str;
 			i++;
 		}
-		if (*str)
+		if (*str && *(str + 1))
 			str++;
 	}
 	array[i] = 0;

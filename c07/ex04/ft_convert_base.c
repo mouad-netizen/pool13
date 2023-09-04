@@ -5,97 +5,82 @@
 /*                                                    +:+ +:+         +:+     */
 /*   By: momajdou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
-/*   Created: 2023/09/02 15:41:54 by momajdou          #+#    #+#             */
-/*   Updated: 2023/09/03 21:34:32 by momajdou         ###   ########.fr       */
+/*   Created: 2023/09/04 18:30:04 by momajdou          #+#    #+#             */
+/*   Updated: 2023/09/04 18:53:24 by momajdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
-char	*ft_convert_base2(int nb, char *base);
-int		ft_strlen(char *str);
+#include <stdlib.h>
 
-char	*skip_spaces(char *str)
+int	ft_strlen(char *s);
+int	is_base_valid(char *s);
+int	ft_atoi_base(char *str, char *base);
+
+int	calc_base_length(long long int nbr, unsigned int length)
 {
-	while (*str)
-	{
-		if (*str == ' ' || (*str >= 9 && *str <= 13))
-			str++;
-		else
-			break ;
-	}
-	return (str);
+	if (nbr < length)
+		return (1);
+	return (1 + calc_base_length(nbr / length, length));
 }
 
-int	check_base(char *base)
+void	fill_base_string(char *result, int length, int number, char *base)
 {
 	int	i;
-	int	j;
 
 	i = 0;
-	j = 0;
-	while (base[i])
+	if (number < 0)
 	{
-		j = i + 1;
-		while (base[j])
-		{
-			if (base[i] == base[j])
-				return (0);
-			j++;
-		}
+		result[i] = '-';
+		number *= -1;
 		i++;
 	}
-	return (1);
-}
-
-int	in_base(char c, char *base)
-{
-	int	i;
-
-	i = 0;
-	while (base[i])
+	while (i < length)
 	{
-		if (c == base[i])
-			return (i);
+		result[length - 1 - i] = base[number % ft_strlen(base)];
+		number /= ft_strlen(base);
 		i++;
 	}
-	return (-1);
+	result[length] = '\0';
 }
 
-int	ft_atoi_base(char *str, char *base)
+void	custom_strcpy(char *dest, char *src)
 {
 	int	i;
-	int	base_len;
-	int	result;
-	int	sign;
 
-	if (!check_base(base))
-		return (0);
-	base_len = ft_strlen(base);
-	result = 0;
-	str = skip_spaces(str);
-	sign = 1;
 	i = 0;
-	while (*str == '-' || *str == '+')
+	while (src[i])
 	{
-		if (*str == '-')
-			sign *= -1;
-		str++;
+		dest[i] = src[i];
+		i++;
 	}
-	while (in_base(*str, base) != -1)
-	{
-		result = result * base_len + in_base(*str, base);
-		str++;
-	}
-	return (result * sign);
+	dest[i] = '\0';
 }
 
 char	*ft_convert_base(char *nbr, char *base_from, char *base_to)
 {
-	char	*p;
-	int		x;
+	char		*result;
+	char		*temp_str;
+	long int	number;
+	int			sign;
+	int			length;
 
-	if (!check_base(base_from) || !check_base(base_to))
-		return (0);
-	x = ft_atoi_base(nbr, base_from);
-	p = ft_convert_base2(x, base_to);
-	return (p);
+	sign = 0;
+	if (!is_base_valid(base_from) || !is_base_valid(base_to))
+		return (NULL);
+	number = ft_atoi_base(nbr, base_from);
+	if (number < 0)
+	{
+		sign = 1;
+		number *= -1;
+	}
+	length = calc_base_length(number, ft_strlen(base_to));
+	result = malloc((length + 1) * sizeof(char));
+	fill_base_string(result, length, number, base_to);
+	if (!sign)
+		return (result);
+	temp_str = malloc((length + 2) * sizeof(char));
+	temp_str[0] = '-';
+	custom_strcpy(&temp_str[1], result);
+	free(result);
+	return (temp_str);
 }

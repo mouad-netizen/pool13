@@ -6,7 +6,7 @@
 /*   By: momajdou <marvin@42.fr>                    +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2023/08/27 10:16:17 by momajdou          #+#    #+#             */
-/*   Updated: 2023/08/27 16:09:57 by momajdou         ###   ########.fr       */
+/*   Updated: 2023/09/04 20:32:17 by momajdou         ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,29 +58,25 @@ int	valid_base(char *base)
 
 void	ft_putnbr_base(int nbr, char *base)
 {
-	int	n;
+	int			n;
+	long long	nb;
 
-	nbr = (int)nbr;
+	nb = nbr;
 	n = ft_strlen(base);
 	if (!valid_base(base))
 		return ;
-	if (nbr == -2147483648)
+	if (nb < 0)
 	{
-		write(1, "-2147483648", 11);
-		return ;
-	}
-	if (nbr < 0)
-	{
-		nbr = -nbr;
+		nb = -nb;
 		ft_putchar('-');
 	}
-	if (nbr >= n)
+	if (nb >= n)
 	{
-		ft_putnbr_base(nbr / n, base);
-		ft_putchar(base[nbr % n]);
+		ft_putnbr_base(nb / n, base);
+		ft_putchar(base[nb % n]);
 	}
 	else
 	{
-		ft_putchar(base[nbr]);
+		ft_putchar(base[nb]);
 	}
 }
